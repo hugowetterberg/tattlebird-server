@@ -1,0 +1,47 @@
+body {
+  background: #000;
+  color: #FFF;
+}
+
+form {
+  background: #333;
+  padding: 10px;
+}
+
+.state {
+  display: none;
+}
+
+.current-state {
+  display: block;
+}
+
+@-webkit-keyframes pulse-warning {
+ 0% {
+   background-color: red;
+   opacity: 1.0;
+   -webkit-transform: scale(1.0) rotate(0deg);
+ }
+ 33% {
+   background-color: yellow;
+   opacity: 0.75;
+   -webkit-transform: scale(1.1) rotate(-5deg);
+ }
+ 67% {
+   background-color: red;
+   opacity: 0.5;
+   -webkit-transform: scale(1.1) rotate(5deg);
+ }
+ 100% {
+   background-color: yellow;
+   opacity: 1.0;
+   -webkit-transform: scale(1.0) rotate(0deg);
+ }
+}
+
+.warning-pulse {
+ -webkit-animation-name: pulse-warning;
+ -webkit-animation-duration: 4s;
+ -webkit-animation-direction: alternate;
+ -webkit-animation-timing-function: ease-in-out;
+}
