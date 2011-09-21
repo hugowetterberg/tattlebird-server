@@ -9,25 +9,27 @@
     <script src="/js/app.js"></script>
   </head>
   <body>
-    <div id="splash" class="state current-state state-splash">
-      <h1>Tattlebird</h1>
-      <div class="loading"></div>
-    </div>
-    <div id="login" class="state state-login">
+    <h1>Tattlebird</h1>
+    <div id="state-login" class="state">
       <form method="post" accept-charset="utf-8" class="login">
-        <div class="field">
-          <label for="username">Username</label><input type="text" name="username" value="" />
-        </div>
-        <div class="field">
-          <label for="password">Password</label><input type="password" name="password" value="" />
+        <div class="fields">
+          <div class="field">
+            <label for="username">Username</label><input type="text" name="username" value="" />
+          </div>
+          <div class="field">
+            <label for="password">Password</label><input type="password" name="password" value="" />
+          </div>
         </div>
         <p><input type="submit" value="Login &rarr;"></p>
       </form>
     </div>
-    <div id="main" class="state state-main">
-      <h1>Tattlebird</h1>
-      <div class="loading"></div>
-      <ul class="">
+    <div id="state-main" class="state">
+      <ul id="site-statuses">
+      </ul>
+    </div>
+    <div id="state-progress" class="state current-state">
+      <div id="progress-spinner"></div>
+      <h2>Loading...</h2>
     </div>
     <script src="/js/crypto-sha1-hmac.js"></script>
   </body>

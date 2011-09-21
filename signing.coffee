@@ -1,4 +1,5 @@
 crypto = require 'crypto'
+url = require 'url'
 
 percentEncode = (s)->
   if s is null
@@ -84,12 +85,43 @@ exports.validateSignature = (puri, requestReceived, credentials, callback)->
     callback new Error('Invalid signature')
   null
 
-exports.issueChallenge = (socket, mdb, callback)->
+exports.parseRequest = (req, mdb, callback)->
+  req.setEncoding 'utf-8'
+  shasum = crypto.createHash 'sha256'
+  puri = url.parse req.url, yes
+
+  requestReceived = new Date()
+
+  data = ''
+  req.on 'data', (chunk)->
+    data += chunk
+    shasum.update chunk
+  req.on 'end', ()->
+    mdb.collection 'credentials', (error, creds)->
+      console.log "Loading credentials for #{puri.query.tattle_key}"
+      creds.findOne key:puri.query.tattle_key, (error, cred)->
+        if not cred or error
+          callback new Error('Unknown API key', 1001)
+        else
+          # Validate get-parameter signature.
+          exports.validateSignature puri, requestReceived, cred, (error, valid)->
+            if error
+              callback error
+            else
+              # Validate body hash.
+              body_hash = shasum.digest('base64')
+              if not (body_hash is puri.query.tattle_body_hash)
+                callback new Error('Invalid body hash', 1000)
+              else
+                body = JSON.parse(data)
+                callback false, body, puri, cred
+
+exports.issueChallenge = (session, callback)->
   challenge = nonce(64)
-  socket.emit 'challenge', sign:challenge, (data)->
+  session.socket.emit 'challenge', sign:challenge, (data)->
     key = data.key
 
-    mdb.collection 'credentials', (error, creds)->
+    session.collection 'credentials', (error, creds)->
       console.log "Loading credentials for #{key}"
       creds.findOne key:key, (error, credentials)->
         if error
@@ -104,6 +136,11 @@ exports.issueChallenge = (socket, mdb, callback)->
           signature = hmac.digest 'hex'
     
           if signature isnt data.signature
+            session.socket.emit 'challenge-failed',
+              message: error.message
             callback new Error("Signature mismatch")
           else
+            session.socket.emit 'challenge-success',
+              key: credentials.key
+              admin: credentials.admin
             callback no, credentials

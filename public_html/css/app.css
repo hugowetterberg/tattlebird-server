@@ -1,11 +1,46 @@
 body {
   background: #000;
   color: #FFF;
+  font-family: "Helvetica Neue", Helvetica, Arial, _sans;
+}
+
+h1 {
+  border-bottom: 3px solid white;
+}
+
+h1, h2, h3, h4 {
+  font-family: "HelveticaNeue-UltraLight", "HelveticaNeue-Light", "Helvetica Neue", Helvetica, Arial, _sans;
+  font-weight: normal;
 }
 
 form {
-  background: #333;
+  background: rgba(255, 0, 0, 0.1);
   padding: 10px;
+  border: 2px solid white;
+  border-radius: 10px;
+}
+
+form .fields {
+  display: table;
+}
+
+form .field {
+  display: table-row;
+}
+
+form .field > label, form .field > input {
+  display: table-cell;
+}
+
+form .field > label {
+  padding-right: 2em;
+}
+
+form input[type=submit] {
+  border: 2px solid white;
+  border-radius: 10px;
+  background: rgba(255, 0, 0, 0.1);
+  color: #FFF;
 }
 
 .state {
@@ -16,32 +51,60 @@ form {
   display: block;
 }
 
-@-webkit-keyframes pulse-warning {
- 0% {
-   background-color: red;
-   opacity: 1.0;
-   -webkit-transform: scale(1.0) rotate(0deg);
- }
- 33% {
-   background-color: yellow;
-   opacity: 0.75;
-   -webkit-transform: scale(1.1) rotate(-5deg);
- }
- 67% {
-   background-color: red;
-   opacity: 0.5;
-   -webkit-transform: scale(1.1) rotate(5deg);
- }
- 100% {
-   background-color: yellow;
-   opacity: 1.0;
-   -webkit-transform: scale(1.0) rotate(0deg);
- }
+#state-progress {
+  margin: 0 auto 0 auto;
+  width: 300px;
+  text-align: center;
 }
 
-.warning-pulse {
- -webkit-animation-name: pulse-warning;
- -webkit-animation-duration: 4s;
- -webkit-animation-direction: alternate;
- -webkit-animation-timing-function: ease-in-out;
+#progress-spinner {
+  height: 100px;
+}
+
+li.site {
+  display: block;
+  border: 2px solid white;
+  border-radius: 10px;
+  padding: 5px;
+  clear: right;
+  max-width: 400px;
+  min-height: 2em;
+  line-height: 2em;
+  margin-bottom: 1em;
+}
+
+.site-info {
+  float: right;
+  margin-right: 1em;
+}
+
+.site-info .symbol {
+  display: inline-block;
+  margin: 0.2em 0.5em 0 0;
+}
+
+.symbol {
+  background: url('/img/symbols.png') no-repeat top left;
+  width: 24px;
+  height: 24px;
+}
+
+.symbol-warning, .symbol-unsupported {
+  background-position: -24px 0;
+}
+
+.symbol-alert {
+  background-position: -24px -24px;
+}
+
+.symbol-unknown {
+  background-position: 0 -24px;
+}
+
+.symbol-revoked, .symbol-error {
+  background-position: -48px 0;
+}
+
+.symbol-emergency, .symbol-security-update, .symbol-critical {
+  background-position: -48px -24px;
 }
