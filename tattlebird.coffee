@@ -14,7 +14,7 @@ app = express.createServer()
 app.use(express.logger())
 app.use(express.static(__dirname + '/public_html'))
 io = socket_io.listen(app)
-app.listen(8034)
+app.listen(8080)
 
 # Connect to mongodb.
 server = new mongodb.Server "127.0.0.1", 27017, {}
