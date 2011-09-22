@@ -29,20 +29,38 @@
     </div>
     <div id="state-details" class="state">
       <a href="#" class="back-link go-to-main">Back</a>
-      <div id="security-updates" class="details-section">
-        <h2>Security updates</h2>
-        <ul class="updates security-updates">
-        </ul>
-      </div>
-      <div id="unsupported-releases" class="details-section">
-        <h2>Unsupported</h2>
-        <ul class="updates unsupported-releases">
-        </ul>
-      </div>
-      <div id="available-updates" class="details-section">
-        <h2>Updates available</h2>
-        <ul class="updates available-updates">
-        </ul>
+      <div class="site-statuses">
+        <section class="status-set projects">
+          <h1>Module status</h1>
+          <div id="security-updates" class="details-section">
+            <h2>Security updates</h2>
+            <ul class="site-state updates security-updates">
+            </ul>
+          </div>
+          <div id="unsupported-releases" class="details-section">
+            <h2>Unsupported</h2>
+            <ul class="site-state updates unsupported-releases">
+            </ul>
+          </div>
+          <div id="available-updates" class="details-section">
+            <h2>Updates available</h2>
+            <ul class="site-state updates available-updates">
+            </ul>
+          </div>
+        </section>
+        <section class="status-set site-status">
+          <h1>Site status</h1>
+          <div id="site-errors" class="details-section">
+            <h2>Errors</h2>
+            <ul class="site-state statuses-errors">
+            </ul>
+          </div>
+          <div id="site-warnings" class="details-section">
+            <h2>Warnings</h2>
+            <ul class="site-state statuses-warnings">
+            </ul>
+          </div>
+        </section>
       </div>
     </div>
     <div id="state-progress" class="state current-state">

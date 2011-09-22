@@ -74,6 +74,7 @@ li.site {
   max-width: 400px;
   min-height: 2em;
   line-height: 2em;
+  cursor: pointer;
 }
 
 li.site:last-child {
@@ -114,4 +115,23 @@ li.site:last-child {
 
 .symbol-emergency, .symbol-security-update, .symbol-critical {
   background-position: -48px -24px;
+}
+
+.site-statuses {
+  display: table;
+}
+
+.site-statuses .status-set {
+  display: table-cell;
+  padding-right: 2em;
+  padding-left: 2em;
+  border-right: 2px solid white;
+}
+
+.site-statuses .status-set:first-child {
+  padding-left: 0;
+}
+
+.site-statuses .status-set:last-child {
+  border-right: none;
 }

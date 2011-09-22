@@ -28,22 +28,36 @@
   statuses = {}
 
   showDetails = (data)->
+    statusItem = (status)->
+      li = $("<li></li>")
+      $('<h3>').text(status.title).appendTo(li)
+      $('<p>').html(status.value).appendTo(li)
+      $('p a', li).each ()->
+        href = $(this).attr('href')
+        if href.substring(0,1) is '/'
+          $(this).attr('href', "##{href}")
+      li
+
+    $('#state-details ul.site-state').empty()
     setState 'details', (error)->
       for project, info of data.projects
         if info.status_as_text is 'not_secure'
-          $('#security-updates ul.security-updates').append("<li>#{project}</li>")
+          $('#security-updates ul.site-state').append("<li>#{project}</li>")
         else if info.status_as_text is 'not_current'
-          $('#available-updates ul.available-updates').append("<li>#{project}</li>")
+          $('#available-updates ul.site-state').append("<li>#{project}</li>")
         else if info.status_as_text is 'not_supported'
-          $('#unsupported-releases ul.unsupported-releases').append("<li>#{project}</li>")
+          $('#unsupported-releases ul.site-state').append("<li>#{project}</li>")
+      for status in data.status
+        if status.severity_as_text is 'error'
+          $('#site-errors ul.site-state').append(statusItem(status))
+        if status.severity_as_text is 'warning'
+          $('#site-warnings ul.site-state').append(statusItem(status))
+        else
+          console.log status.severity_as_text
       $('#state-details .details-section').each ()->
-        if not $('ul.updates li', this).length
-          console.log "Hiding"
-          console.log this
+        if not $('ul.site-state li', this).length
           $(this).hide()
         else
-          console.log "Showing"
-          console.log this
           $(this).show()
 
   socket.on 'status-update', (data)->
