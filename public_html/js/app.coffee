@@ -52,8 +52,8 @@
         class: 'site'
       ).appendTo(status_list)
       .append($('<label>').text(data.site))
-      .append($('<div class="site-info projects">').text('Projects').prepend('<div class="symbol symbol-unknown">'))
-      .append($('<div class="site-info status">').text('Status').prepend('<div class="symbol symbol-unknown">'))
+      .append($('<div class="site-info projects">').text('Modules').prepend('<div class="symbol symbol-unknown">'))
+      .append($('<div class="site-info status">').text('Site status').prepend('<div class="symbol symbol-unknown">'))
       statuses[data.site] = yes
     else
       site = $("div[site=#{site}]")

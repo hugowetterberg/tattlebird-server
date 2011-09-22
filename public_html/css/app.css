@@ -63,14 +63,17 @@ form input[type=submit] {
 
 li.site {
   display: block;
-  border: 2px solid white;
-  border-radius: 10px;
+  border-bottom: 2px solid white;
+  border-top: 1px solid white;
   padding: 5px;
   clear: right;
   max-width: 400px;
   min-height: 2em;
   line-height: 2em;
-  margin-bottom: 1em;
+}
+
+li.site:last-child {
+  border-bottom: 3px solid white;
 }
 
 .site-info {
