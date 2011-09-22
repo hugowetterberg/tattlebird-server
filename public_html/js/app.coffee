@@ -1,5 +1,24 @@
 (($)->
   socket = io.connect '/'
+  sammy = null
+  setUpSammy = (callback)->
+    if not sammy
+      sammy = Sammy ()->
+        this.get '#/sites', ()->
+          setState 'main', ()->
+            socket.emit 'status-update'
+
+        this.get '#/sites/:site', ()->
+          site = this.params['site']
+          socket.emit 'status-details', site, (details)->
+            showDetails details
+            $('body > h1, head > title').text('Tattlebird - ' + site)
+
+        this.get '#/login', ()->
+          setState 'login'
+    $ ()->
+      sammy.run()
+      callback()
 
   $ ()->
     spinner = document.getElementById 'progress-spinner'
@@ -14,12 +33,9 @@
       shadow: no
     new Spinner(opts).spin(spinner)
 
-    $('.back-link.go-to-main').bind 'click', ()->
-      setState 'main', ->
-
   setState = (state, callback)->
     $ ()->
-      console.log "Showing state #{state}"
+      $('body > h1, head > title').text('Tattlebird')
       $(".current-state").trigger('will-hide').removeClass('current-state')
       success = $("#state-#{state}").trigger('will-show').addClass('current-state').length
       error = if success then no else new Error("No section named #{state}")
@@ -73,8 +89,7 @@
       .append($('<div class="site-info status">').text('Site status').prepend('<div class="symbol symbol-unknown">'))
       statuses[data.site] = yes
       site.bind 'click', ()->
-        socket.emit 'status-details', data.site, (details)->
-          showDetails details
+        sammy.setLocation '#/sites/' + data.site
     else
       site = $("div[site=#{site}]")
 
@@ -101,14 +116,13 @@
 
   socket.on 'challenge-failed', (data)->
     console.log data.message
-    setState 'login', (error)->
+    setUpSammy ()->
+      sammy.setLocation '#/login'
       null # Show error message
 
   socket.on 'challenge-success', (data)->
-    console.log data
-    setState 'main', (error)->
-      console.log 'Asking for full status update'
-      socket.emit 'status-update'
+    setUpSammy ()->
+      sammy.setLocation '#/sites'
 
   socket.on 'challenge', (data, callback)->
     console.log "Got challenge asking us to sign #{data.sign}"
@@ -140,6 +154,6 @@
         key: key
         signature: signature
     else
-      setState 'login', (error)->
-        null
+      setUpSammy ()->
+        sammy.setLocation '#/login'
 )(jQuery)
