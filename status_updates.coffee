@@ -32,8 +32,10 @@ exports.start = (session, credentials)->
             console.log error.message
 
   session.socket.on 'status-details', (site, callback)->
-    statuses.find site:site, (error, data)->
-      callback data
+    session.collection 'statuses', (error, statuses)->
+      if not error
+        statuses.findOne site:site, (error, data)->
+          callback data
 
   session.tattlebird.on 'status-update', (data)->
     # Compute a status digest to update the UI.

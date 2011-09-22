@@ -14,6 +14,9 @@
       shadow: no
     new Spinner(opts).spin(spinner)
 
+    $('.back-link.go-to-main').bind 'click', ()->
+      setState 'main', ->
+
   setState = (state, callback)->
     $ ()->
       console.log "Showing state #{state}"
@@ -24,7 +27,25 @@
 
   statuses = {}
 
-  
+  showDetails = (data)->
+    setState 'details', (error)->
+      for project, info of data.projects
+        if info.status_as_text is 'not_secure'
+          $('#security-updates ul.security-updates').append("<li>#{project}</li>")
+        else if info.status_as_text is 'not_current'
+          $('#available-updates ul.available-updates').append("<li>#{project}</li>")
+        else if info.status_as_text is 'not_supported'
+          $('#unsupported-releases ul.unsupported-releases').append("<li>#{project}</li>")
+      $('#state-details .details-section').each ()->
+        if not $('ul.updates li', this).length
+          console.log "Hiding"
+          console.log this
+          $(this).hide()
+        else
+          console.log "Showing"
+          console.log this
+          $(this).show()
+
   socket.on 'status-update', (data)->
     console.log "Status update for #{data.site}"
     status_list = $('#site-statuses')
@@ -37,6 +58,9 @@
       .append($('<div class="site-info projects">').text('Modules').prepend('<div class="symbol symbol-unknown">'))
       .append($('<div class="site-info status">').text('Site status').prepend('<div class="symbol symbol-unknown">'))
       statuses[data.site] = yes
+      site.bind 'click', ()->
+        socket.emit 'status-details', data.site, (details)->
+          showDetails details
     else
       site = $("div[site=#{site}]")
 

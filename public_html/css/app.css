@@ -4,6 +4,10 @@ body {
   font-family: "Helvetica Neue", Helvetica, Arial, _sans;
 }
 
+a {
+  color: white;
+}
+
 h1 {
   border-bottom: 3px solid white;
 }
