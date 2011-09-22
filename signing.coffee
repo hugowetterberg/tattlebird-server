@@ -137,7 +137,7 @@ exports.issueChallenge = (session, callback)->
     
           if signature isnt data.signature
             session.socket.emit 'challenge-failed',
-              message: error.message
+              message: "Signature mismatch"
             callback new Error("Signature mismatch")
           else
             session.socket.emit 'challenge-success',
