@@ -14,6 +14,24 @@
       shadow: no
     new Spinner(opts).spin(spinner)
 
+    # Login handler
+    $('#state-login form').bind 'submit', (event)->
+      setState 'progress', (error)=>
+        values = {}
+        for pair in $(this).serializeArray()
+          values[pair.name] = pair.value
+
+        # Saving credentials
+        localStorage['tattlebird_key'] = values.username
+        localStorage['tattlebird_secret'] = values.password
+
+        signature = Crypto.HMAC(Crypto.SHA1, values.username + data.sign, values.password)
+        console.log "Sending user response signature #{signature} for key #{values.username}"
+        callback
+          key: values.username
+          signature: signature
+      no
+
   setState = (state, callback)->
     $ ()->
       console.log "Showing state #{state}"
@@ -84,20 +102,5 @@
         signature: signature
     else
       setState 'login', (error)->
-        $('#state-login form').bind 'submit', (event)->
-          setState 'progress', (error)=>
-            values = {}
-            for pair in $(this).serializeArray()
-              values[pair.name] = pair.value
-
-            # Saving credentials
-            localStorage['tattlebird_key'] = values.username
-            localStorage['tattlebird_secret'] = values.password
-
-            signature = Crypto.HMAC(Crypto.SHA1, values.username + data.sign, values.password)
-            console.log "Sending user response signature #{signature} for key #{values.username}"
-            callback
-              key: values.username
-              signature: signature
-          no
+        null
 )(jQuery)
