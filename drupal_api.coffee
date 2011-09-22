@@ -16,7 +16,7 @@ exports.registerAPI = (tattlebird, app)->
       else
         tattlebird.collection 'statuses', (error, statuses)->
           data.site = credentials.key
-          statuses.insert data
+          statuses.update site:data.site, data, upsert:yes
           tattlebird.emit 'status-update', data
           res.writeHead 200,
             'Content-Type': 'application/json'
